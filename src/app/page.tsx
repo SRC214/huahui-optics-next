@@ -1,65 +1,81 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { categories, company, products } from '@/lib/site-data';
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main>
+      <header className="site-header">
+        <div className="container nav-wrap">
+          <div className="brand">{company.shortName}</div>
+          <nav>
+            <a href="#products">产品中心</a>
+            <a href="#about">关于我们</a>
+            <a href="#contact">联系我们</a>
+          </nav>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+      </header>
+
+      <section className="hero container">
+        <p className="eyebrow">始于 {company.founded} · 专业光学产品制造商</p>
+        <h1>面向企业与机构的高质量光学产品解决方案</h1>
+        <p className="lead">
+          聚焦验光镜片箱、试镜架、光学镜片和放大镜四大产品线。页面采用 Next.js
+          构建，支持更强 SEO 与产品页面索引。
+        </p>
+        <div className="actions">
+          <a className="btn" href="#products">
+            浏览产品
           </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+          <a className="btn btn-ghost" href="#contact">
+            获取报价
           </a>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section id="products" className="container section">
+        <h2>产品中心</h2>
+        <p className="muted">每个产品都有独立页面，便于搜索引擎抓取与关键词优化。</p>
+
+        <div className="category-grid">
+          {categories.map((category) => (
+            <article key={category.id} className="category-card">
+              <h3>{category.name}</h3>
+              <p>{category.description}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="product-grid">
+          {products.map((product) => (
+            <article key={product.id} className="product-card">
+              <h3>{product.name}</h3>
+              <p>{product.summary}</p>
+              <ul>
+                {product.highlights.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <Link href={`/products/${product.slug}`}>查看产品详情 →</Link>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="about" className="container section">
+        <h2>关于我们</h2>
+        <p>
+          {company.name}
+          长期服务眼科机构、医院、教学与科研场景。我们持续优化光学工艺和质量体系，提供稳定、可持续合作的制造支持。
+        </p>
+      </section>
+
+      <section id="contact" className="container section contact">
+        <h2>联系我们</h2>
+        <p>电话：{company.phone}</p>
+        <p>手机：{company.mobile}</p>
+        <p>邮箱：{company.email}</p>
+        <p>地址：{company.address}</p>
+      </section>
+    </main>
   );
 }
